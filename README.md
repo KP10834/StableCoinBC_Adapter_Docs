@@ -1,0 +1,2 @@
+# StableCoinBC_Adapter_Docs
+StableCoinBC_Adapter_Docs
