@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - "asyncapi.yaml"
+      - ".github/workflows/deploy-docs.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,6 +28,8 @@ jobs:
 
       - name: Generate HTML from AsyncAPI
         run: |
+          rm -rf docs
+          mkdir -p docs
           docker run --rm -v ${{ github.workspace }}:/app -w /app \
             asyncapi/cli generate fromTemplate asyncapi.yaml \
             @asyncapi/html-template -o docs --force-write
