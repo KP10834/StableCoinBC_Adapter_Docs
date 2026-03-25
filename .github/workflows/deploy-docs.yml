@@ -68,6 +68,24 @@ jobs:
             -e 's|font-mono text-base">adapter.config.register<|font-mono text-base">토큰 설정 등록 (adapter.config.register)<|g' \
             -e 's|font-mono text-base">adapter.deposit.detected<|font-mono text-base">입금 감지 이벤트 (adapter.deposit.detected)<|g' \
             docs/index.html
+          sed -i \
+            -e 's/receiveAccountCreate/계정 생성 요청 수신/g' \
+            -e 's/sendAccountCreated/계정 생성 결과 발행/g' \
+            -e 's/receiveAccountDeploy/계정 배포 요청 수신/g' \
+            -e 's/sendAccountDeployed/계정 배포 결과 발행/g' \
+            -e 's/receiveAccountDelete/계정 삭제 요청 수신/g' \
+            -e 's/receiveWithdrawRequest/출금 요청 수신/g' \
+            -e 's/sendWithdrawResult/출금 결과 발행/g' \
+            -e 's/receivePaymentRequest/결제 요청 수신/g' \
+            -e 's/sendPaymentResult/결제 결과 발행/g' \
+            -e 's/receiveConfirm/트랜잭션 컨펌 요청 수신/g' \
+            -e 's/sendConfirmed/트랜잭션 컨펌 결과 발행/g' \
+            -e 's/receiveBalanceInquiry/잔액 조회 요청 수신/g' \
+            -e 's/sendBalanceResult/잔액 조회 결과 발행/g' \
+            -e 's/receiveConfigRegister/토큰 설정 등록 요청 수신/g' \
+            -e 's/sendDepositDetected/입금 감지 이벤트 발행/g' \
+            -e 's/TransactionStatus/트랜잭션 상태/g' \
+            docs/js/app.js
 
       - uses: actions/upload-pages-artifact@v3
         with:
