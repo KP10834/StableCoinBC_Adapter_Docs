@@ -998,3 +998,55 @@ components:
             symbol: "ETH"
             status: "TXPD"
             transactionDatetime: "20260325122200"
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  새 토픽 추가 가이드 — 아래 템플릿 복사 후 값만 수정하세요       ║
+# ╚══════════════════════════════════════════════════════════════════╝
+#
+# [1단계] channels 섹션에 추가:
+#
+#   newTopicRequest:
+#     address: adapter.new.topic
+#     messages:
+#       NewTopicRequest:
+#         $ref: "#/components/messages/NewTopicRequest"
+#
+# [2단계] operations 섹션에 추가:
+#
+#   receiveNewTopic:
+#     action: receive            # receive = Inbound, send = Outbound
+#     channel:
+#       $ref: "#/channels/newTopicRequest"
+#     summary: 새 토픽 요청 수신
+#     reply:                     # 응답 없으면(NoReply) reply 블록 삭제
+#       channel:
+#         $ref: "#/channels/newTopicResult"
+#
+# [3단계] components/messages 섹션에 추가:
+#
+#   NewTopicRequest:
+#     name: NewTopicRequest
+#     title: 새 토픽 요청
+#     payload:
+#       type: object
+#       required:
+#         - requestId
+#         - myField
+#       properties:
+#         requestId:
+#           type: string
+#           description: 요청 고유 ID
+#           examples:
+#             - "REQ-001"
+#         myField:
+#           type: string
+#           description: 필드 설명
+#           examples:
+#             - "example-value"
+#     examples:
+#       - name: 요청 예시
+#         payload:
+#           requestId: "REQ-001"
+#           myField: "example-value"
+#
+# [4단계] asyncapi.yaml 수정 후 main에 push → GitHub Actions 자동 배포
