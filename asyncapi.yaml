@@ -821,11 +821,11 @@ channels:
               transactionDatetime: "20260325122200"
 
 operations:
-  # Account Create (Request -> Reply)
   receiveAccountCreate:
     action: receive
     channel:
       $ref: "#/channels/accountCreate"
+    title: 계정 생성 요청 수신
     summary: 계정 생성 요청 수신
     reply:
       channel:
@@ -835,13 +835,14 @@ operations:
     action: send
     channel:
       $ref: "#/channels/accountCreated"
+    title: 계정 생성 결과 발행
     summary: 계정 생성 결과 발행
 
-  # Account Deploy (Request -> Reply)
   receiveAccountDeploy:
     action: receive
     channel:
       $ref: "#/channels/accountDeploy"
+    title: 계정 배포 요청 수신
     summary: 계정 배포 요청 수신
     reply:
       channel:
@@ -851,20 +852,21 @@ operations:
     action: send
     channel:
       $ref: "#/channels/accountDeployed"
+    title: 계정 배포 결과 발행
     summary: 계정 배포 결과 발행
 
-  # Account Delete (NoReply)
   receiveAccountDelete:
     action: receive
     channel:
       $ref: "#/channels/accountDelete"
+    title: 계정 삭제 요청 수신
     summary: 계정 삭제 요청 수신 (응답 없음)
 
-  # Withdraw (Request -> Reply)
   receiveWithdrawRequest:
     action: receive
     channel:
       $ref: "#/channels/withdrawRequest"
+    title: 출금 요청 수신
     summary: 출금 요청 수신
     reply:
       channel:
@@ -874,13 +876,14 @@ operations:
     action: send
     channel:
       $ref: "#/channels/withdrawResult"
+    title: 출금 결과 발행
     summary: 출금 결과 발행
 
-  # Payment (Request -> Reply)
   receivePaymentRequest:
     action: receive
     channel:
       $ref: "#/channels/paymentRequest"
+    title: 결제 요청 수신
     summary: 결제 요청 수신
     reply:
       channel:
@@ -890,13 +893,14 @@ operations:
     action: send
     channel:
       $ref: "#/channels/paymentResult"
+    title: 결제 결과 발행
     summary: 결제 결과 발행
 
-  # Confirm (Request -> Reply)
   receiveConfirm:
     action: receive
     channel:
       $ref: "#/channels/commonConfirm"
+    title: 트랜잭션 컨펌 요청 수신
     summary: 트랜잭션 컨펌 요청 수신
     reply:
       channel:
@@ -906,13 +910,14 @@ operations:
     action: send
     channel:
       $ref: "#/channels/commonConfirmed"
+    title: 트랜잭션 컨펌 결과 발행
     summary: 트랜잭션 컨펌 결과 발행
 
-  # Balance (Request -> Reply)
   receiveBalanceInquiry:
     action: receive
     channel:
       $ref: "#/channels/balanceInquiry"
+    title: 잔액 조회 요청 수신
     summary: 잔액 조회 요청 수신
     reply:
       channel:
@@ -922,25 +927,27 @@ operations:
     action: send
     channel:
       $ref: "#/channels/balanceResult"
+    title: 잔액 조회 결과 발행
     summary: 잔액 조회 결과 발행
 
-  # Config Register (NoReply)
   receiveConfigRegister:
     action: receive
     channel:
       $ref: "#/channels/configRegister"
+    title: 토큰 설정 등록 요청 수신
     summary: 토큰 설정 등록 요청 수신 (응답 없음)
 
-  # Deposit (Event publish)
   sendDepositDetected:
     action: send
     channel:
       $ref: "#/channels/depositDetected"
-    summary: 입금 감지 이벤트 발행 (WebSocket -> Kafka)
+    title: 입금 감지 이벤트 발행
+    summary: 입금 감지 이벤트 발행 (WebSocket → Kafka)
 
 components:
   schemas:
     TransactionStatus:
+      title: 트랜잭션 상태
       type: string
       enum:
         - TXPD
