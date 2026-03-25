@@ -1,37 +1,104 @@
 # StableCoin BC Adapter - Kafka API 문서
 
-StableCoin 블록체인 어댑터의 Kafka 메시지 스펙 문서입니다.
+## 토픽 추가 가이드
 
-## 배포 URL
+### 1. `asyncapi.yaml`에 channel 추가
 
-https://kp10834.github.io/StableCoinBC_Adapter_Docs/
+```yaml
+channels:
+  # 요청 채널
+  myNewRequest:
+    address: adapter.mynew.request
+    title: 새 기능 요청
+    description: Core → Adapter
+    messages:
+      MyNewRequest:
+        name: MyNewRequest
+        title: 새 기능 요청
+        payload:
+          type: object
+          required:
+            - requestId
+          properties:
+            requestId:
+              type: string
+              description: 요청 고유 ID
+              examples:
+                - "REQ001"
+        examples:
+          - name: 새 기능 요청 예시
+            payload:
+              requestId: "REQ001"
 
-## 프로젝트 구조
-
+  # 결과 채널
+  myNewResult:
+    address: adapter.mynew.result
+    title: 새 기능 결과
+    description: Adapter → Core
+    messages:
+      MyNewResponse:
+        name: MyNewResponse
+        title: 새 기능 결과
+        payload:
+          type: object
+          required:
+            - requestId
+            - status
+          properties:
+            requestId:
+              type: string
+              description: 요청 고유 ID
+            status:
+              $ref: "#/components/schemas/TransactionStatus"
+        examples:
+          - name: 새 기능 성공
+            payload:
+              requestId: "REQ001"
+              status: "SUCCESS"
 ```
-asyncapi.yaml        # AsyncAPI 스펙 (메시지 정의 원본)
-custom.css           # 커스텀 UI 스타일
-custom.js            # 사이드바 active 상태 관리
-docs/                # 빌드된 HTML 문서
-.github/workflows/   # GitHub Pages 자동 배포
+
+### 2. `asyncapi.yaml`에 operation 추가
+
+```yaml
+operations:
+  receiveMyNewRequest:
+    action: receive
+    channel:
+      $ref: "#/channels/myNewRequest"
+    title: 새 기능 요청 수신
+    summary: 새 기능 요청 수신
+    reply:
+      channel:
+        $ref: "#/channels/myNewResult"
+
+  sendMyNewResult:
+    action: send
+    channel:
+      $ref: "#/channels/myNewResult"
+    title: 새 기능 결과 발행
+    summary: 새 기능 결과 발행
 ```
 
-## 자동 배포
+### 3. `.github/workflows/deploy-docs.yml`에 한글 치환 추가
 
-`asyncapi.yaml`, `custom.css`, `custom.js` 수정 후 `main` 브랜치에 push하면 GitHub Actions가 자동으로:
+`docs/index.html` sed 블록에 추가:
+```bash
+-e 's/>receiveMyNewRequest</>새 기능 요청 수신</g' \
+-e 's/>sendMyNewResult</>새 기능 결과 발행</g' \
+-e 's|font-mono text-base">adapter.mynew.request<|font-mono text-base">새 기능 요청 (adapter.mynew.request)<|g' \
+-e 's|font-mono text-base">adapter.mynew.result<|font-mono text-base">새 기능 결과 (adapter.mynew.result)<|g' \
+```
 
-1. AsyncAPI HTML 생성
-2. 한글 치환 적용
-3. 커스텀 CSS/JS 주입
-4. GitHub Pages 배포
+`docs/js/app.js` sed 블록에 추가:
+```bash
+-e 's/receiveMyNewRequest/새 기능 요청 수신/g' \
+-e 's/sendMyNewResult/새 기능 결과 발행/g' \
+```
 
-## 로컬 실행
+### 4. push하면 자동 배포
 
 ```bash
-npm run build    # HTML 생성 (Docker 필요)
-npm run serve    # http://localhost:8081/docs 에서 확인
+git add asyncapi.yaml .github/workflows/deploy-docs.yml
+git commit -m "새 기능 토픽 추가"
+git push origin main
 ```
-
-## 커스텀 스타일 수정
-
-`custom.css`에서 사이드바, 뱃지, 레이아웃 등을 수정할 수 있습니다.
