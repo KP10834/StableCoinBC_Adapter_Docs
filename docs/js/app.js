@@ -878,24 +878,24 @@
           "payload": {
             "type": "object",
             "required": [
-              "requestId",
               "chainId",
+              "symbol",
               "address"
             ],
             "properties": {
-              "requestId": {
-                "type": "string",
-                "description": "요청 고유 ID",
-                "examples": [
-                  "B123456789"
-                ],
-                "x-parser-schema-id": "<anonymous-schema-57>"
-              },
               "chainId": {
                 "type": "string",
                 "description": "체인 ID",
                 "examples": [
                   "11155111"
+                ],
+                "x-parser-schema-id": "<anonymous-schema-58>"
+              },
+              "symbol": {
+                "type": "string",
+                "description": "토큰 심볼",
+                "examples": [
+                  "ETH, USDT, USDC..."
                 ],
                 "x-parser-schema-id": "<anonymous-schema-58>"
               },
@@ -915,8 +915,8 @@
             {
               "name": "잔액 조회 요청 예시",
               "payload": {
-                "requestId": "B123456789",
                 "chainId": "11155111",
+                "symbol": "ETH",
                 "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
               }
             }
@@ -942,9 +942,9 @@
             "properties": {
               "requestId": {
                 "type": "string",
-                "description": "요청 고유 ID",
+                "description": "응답 시간",
                 "examples": [
-                  "B123456789"
+                  "2026-03-26T00:23:52.480Z"
                 ],
                 "x-parser-schema-id": "<anonymous-schema-61>"
               },
@@ -967,12 +967,21 @@
                 ],
                 "x-parser-schema-id": "<anonymous-schema-63>"
               },
+              "symbol": {
+                "type": "string",
+                "description": "조회한 토큰 심볼 (실패 시 null)",
+                "nullable": true,
+                "examples": [
+                  "ETH"
+                ],
+                "x-parser-schema-id": "<anonymous-schema-63>"
+              },
               "balance": {
                 "type": "string",
                 "description": "잔액 (decimal string, 실패 시 null)",
                 "nullable": true,
                 "examples": [
-                  "250000000000000000000"
+                  "2.5"
                 ],
                 "x-parser-schema-id": "<anonymous-schema-64>"
               }
@@ -983,16 +992,18 @@
             {
               "name": "잔액 조회 성공",
               "payload": {
-                "requestId": "B123456789",
+                "requestId": "2026-03-26T00:23:52.480Z",
                 "chainId": "11155111",
                 "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18",
-                "balance": "250000000000000000000"
+                "balance": "2.5"
               }
             },
             {
               "name": "잔액 조회 실패",
               "payload": {
-                "requestId": "B123456789",
+                "requestId": "2026-03-26T00:23:52.480Z",
+                "message": "RPC URL is not configured",
+                "symbol": null,
                 "chainId": null,
                 "address": null,
                 "balance": null
